@@ -15,6 +15,13 @@
 #ifndef golBasicTypes_h
 #define golBasicTypes_h
 
+#pragma once
+#include <memory>
+#include <iostream>
+#include <vector>
+#include <random>
+#include <algorithm>
+
 /**
 * \defgroup internal internal
 * \brief Internal stuff, not for end-users.
@@ -44,6 +51,24 @@
 //! Single namespace for all code in this package
 namespace gol
 {
+  class grid
+  {
+    public:
+
+    grid(int rowsArgument, int columnsArgument);
+    grid(int rowsArgument, int columnsArgument, int aliveCells);
+    ~grid();
+    void printGrid();
+    void setGrid();
+
+    private:
+
+    int rows;
+    int columns;     
+    char status;
+    std::vector<char> elementsInRow {};
+    std::vector<std::vector<char>> vectorOfRows {};
+  };
 
 } // end namespace
 
