@@ -147,12 +147,56 @@ namespace gol {
   {
     std::cout << "Insert the status of the cell with coordinates (" << rowCoordinate << "," << columnCoordinate << "):" << std::endl;
     std::cin >> status;
-    vectorOfRows.at(rowCoordinate).at(columnCoordinate) = status;
+    vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1) = status;
   }
 
-  void grid::getGridElement(int rowCoordinate, int columnCoordinate)
+  char grid::getGridElement(int rowCoordinate, int columnCoordinate)
   {
-    std::cout << "The status of the cell with coordinates (" << rowCoordinate << "," << columnCoordinate << ") is: " << vectorOfRows.at(rowCoordinate).at(columnCoordinate) << std::endl;
+    //std::cout << "The status of the cell with coordinates (" << rowCoordinate << "," << columnCoordinate << ") is: " << vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1) << std::endl;
+    return vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1);
   }
 
+  int grid::fetchNeighbours(int rowCoordinate, int columnCoordinate)
+  {
+    status = getGridElement(rowCoordinate, columnCoordinate);
+    int liveNeighbours = 0;
+    int lowerLimitRow = rowCoordinate - 2;
+    int upperLimitRow = rowCoordinate;
+    int lowerLimitColumn = columnCoordinate - 2;
+    int upperLimitColumn = columnCoordinate;
+    if(rowCoordinate == 1)
+    {
+      lowerLimitRow++;
+    }
+    if(rowCoordinate == rows)
+    {
+      upperLimitRow--;
+    }
+    if(columnCoordinate == 1)
+    {
+      lowerLimitColumn++;
+    }
+    if(columnCoordinate == columns)
+    {
+      upperLimitColumn--;
+    }
+    for(int i = lowerLimitRow; i <= upperLimitRow; i++)
+    {
+      for(int j = lowerLimitColumn; j <= upperLimitColumn; j++)
+      {
+        if(vectorOfRows.at(i).at(j) == 'o')
+        {
+          liveNeighbours++;
+        }
+      }
+    }
+    if(vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1) == 'o')
+    {
+      return liveNeighbours-1;
+    }
+    else
+    {
+      return liveNeighbours;
+    }
+  }
 } // end namespace

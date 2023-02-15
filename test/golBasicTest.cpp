@@ -40,11 +40,19 @@ TEST_CASE( "Instantiation of the class", "[ex1]" )
   REQUIRE_NOTHROW(gol::grid("glider.txt"));
   REQUIRE_NOTHROW(gol::grid("oscillators.txt"));
   REQUIRE_NOTHROW(gol::grid("still_lifes.txt"));
+
+  /* Testing getGridElement. */
+
+  REQUIRE(gol::grid("glider.txt").getGridElement(10, 10) == '-');
+  REQUIRE(gol::grid("glider.txt").getGridElement(2, 3) == 'o');
+  REQUIRE(gol::grid("glider.txt").getGridElement(3, 1) == 'o');
 }
 
-TEST_CASE( "My second test", "[some group identifier]" ) {
-  std::vector<int> a;
-  REQUIRE( a.size() == 0 );
+TEST_CASE( "Counting the neighbours", "[ex2]" )
+{
+  REQUIRE(gol::grid("glider.txt").fetchNeighbours(2, 3) == 1);
+  REQUIRE(gol::grid("glider.txt").fetchNeighbours(10, 10) == 0);
+  REQUIRE(gol::grid("glider.txt").fetchNeighbours(4, 3) == 2);
 }
 
 TEST_CASE( "Simple add", "[MyFirstAddFunction]") {

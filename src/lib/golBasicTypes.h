@@ -72,7 +72,8 @@ namespace gol
     taken in input by getGridElement(), which instead gives us back the status of the cell. */
 
     void setGridElement(int rowCoordinate, int columnCoordinate);
-    void getGridElement(int rowCoordinate, int columnCoordinate);
+    char getGridElement(int rowCoordinate, int columnCoordinate);
+    int fetchNeighbours(int rowCoordinate, int columnCoordinate);
 
     private:
 
