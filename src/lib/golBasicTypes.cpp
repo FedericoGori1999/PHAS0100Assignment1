@@ -17,10 +17,15 @@
 namespace gol {
 
   /* The idea is to setup the grid as a 2D matrix, i.e. a vector of vectors, as shown below. This is a sample constructor that takes the char values to add as an input
-  We must include the exception for other values inserted rather than '-' and 'o', and we must include the testing */
+  We must include the exception for other values inserted rather than '-' and 'o'. */
+
 
   grid::grid(int rowsArgument, int columnsArgument) : rows(rowsArgument), columns(columnsArgument)
   {
+    if(rows == 0 || columns == 0)
+    {
+      throw std::logic_error("The grid cannot have 0 rows or 0 columns!");
+    }
     for(int i = 0; i < rows; i++)
     {
       for(int j = 0; j < columns; j++)
@@ -37,6 +42,14 @@ namespace gol {
 
   grid::grid(int rowsArgument, int columnsArgument, int aliveCells) : rows(rowsArgument), columns(columnsArgument)
   {
+    if(rows == 0 || columns == 0)
+    {
+      throw std::logic_error("The grid cannot have 0 rows or 0 columns!");
+    }
+    if(aliveCells > rows * columns)
+    {
+      throw std::logic_error("We cannot have more alive cells than the number of available cells");
+    }
     for(int i = 0; i < rows; i++)
     {
       for(int j = 0; j < columns; j++)
@@ -65,10 +78,16 @@ namespace gol {
     {
       placeAliveCells.at(k) = numbersToDraw.at(k);
     }
+
+    /* This piece of code was to test the shuffling of the numbers
+
     for(int k = 0; k < aliveCells; k++)
     {
       std::cout << placeAliveCells.at(k) << std::endl;
     }
+
+    End of comment */
+
     for(int it = 0; it < aliveCells; it++)
     { 
       int positionInTheRow = placeAliveCells.at(it) / columns;
@@ -77,7 +96,38 @@ namespace gol {
     }
   }
 
-  /* Functions to implement */
+  grid::grid(std::string fileName)
+  {
+    std::string path = "test/data/";
+    path = path + fileName;
+    f = std::fopen(path.c_str(), "rw");
+    if(!f) 
+    {
+      std::string err_msg = "Failed to open file " + fileName;
+      throw std::runtime_error(err_msg);
+    }
+    int i = 0;
+    int j = 0;
+    while ((std::fscanf(f, "%c", &status)) != EOF)
+    {
+        if(status == 'o' || status == '-')
+        {
+            elementsInRow.push_back(status);
+            j++;
+        }
+        else if(status == '\n')
+        {
+          vectorOfRows.push_back(elementsInRow);
+          columns = j;
+          j = 0;
+          i++;
+          elementsInRow.clear();
+        }
+    }
+    vectorOfRows.push_back(elementsInRow);
+    rows = i+1;
+    fclose(f);
+  }
   
   grid::~grid(){}
 
@@ -93,6 +143,16 @@ namespace gol {
     }
   }
 
-  void grid::setGrid(){}
+  void grid::setGridElement(int rowCoordinate, int columnCoordinate)
+  {
+    std::cout << "Insert the status of the cell with coordinates (" << rowCoordinate << "," << columnCoordinate << "):" << std::endl;
+    std::cin >> status;
+    vectorOfRows.at(rowCoordinate).at(columnCoordinate) = status;
+  }
+
+  void grid::getGridElement(int rowCoordinate, int columnCoordinate)
+  {
+    std::cout << "The status of the cell with coordinates (" << rowCoordinate << "," << columnCoordinate << ") is: " << vectorOfRows.at(rowCoordinate).at(columnCoordinate) << std::endl;
+  }
 
 } // end namespace

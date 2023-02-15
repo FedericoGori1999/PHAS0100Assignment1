@@ -21,6 +21,8 @@
 #include <vector>
 #include <random>
 #include <algorithm>
+#include <stdexcept>
+#include <fstream>
 
 /**
 * \defgroup internal internal
@@ -55,11 +57,22 @@ namespace gol
   {
     public:
 
+    /* Here we have the following constructors: the first one allows us to create the grid manually, entering all cells' status as input.
+    The second constructor allows us to create the grid randomly, having given only the number of alive cells. The third constructor
+    takes the grid setup from an external file. */
+
     grid(int rowsArgument, int columnsArgument);
     grid(int rowsArgument, int columnsArgument, int aliveCells);
+    grid(std::string fileName);
     ~grid();
+
     void printGrid();
-    void setGrid();
+
+    /* The function setGridElement() allows us to set the status of the cell whose coordinates are given as an input. The same arguments are
+    taken in input by getGridElement(), which instead gives us back the status of the cell. */
+
+    void setGridElement(int rowCoordinate, int columnCoordinate);
+    void getGridElement(int rowCoordinate, int columnCoordinate);
 
     private:
 
@@ -68,6 +81,7 @@ namespace gol
     char status;
     std::vector<char> elementsInRow {};
     std::vector<std::vector<char>> vectorOfRows {};
+    FILE *f;
   };
 
 } // end namespace
