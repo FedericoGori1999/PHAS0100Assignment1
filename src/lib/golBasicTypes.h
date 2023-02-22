@@ -64,6 +64,7 @@ namespace gol
     grid(int rowsArgument, int columnsArgument);
     grid(int rowsArgument, int columnsArgument, int aliveCells);
     grid(std::string fileName);
+    grid() = default;
     ~grid();
 
     void printGrid();
@@ -72,17 +73,41 @@ namespace gol
     taken in input by getGridElement(), which instead gives us back the status of the cell. */
 
     void setGridElement(int rowCoordinate, int columnCoordinate);
+    char getGridElementUser(int rowCoordinate, int columnCoordinate);
     char getGridElement(int rowCoordinate, int columnCoordinate);
+    std::vector<std::vector<char>> getGrid();
+    int fetchNeighboursUser(int rowCoordinate, int columnCoordinate);
     int fetchNeighbours(int rowCoordinate, int columnCoordinate);
+    void copyGrid(std::vector<std::vector<char>> gridToCopy);
+    int getRows();
+    int getColumns();
+
+    private:
+     
+    char status = '-';
+    std::vector<char> elementsInRow {};
+    FILE *f;
+    std::vector<std::vector<char>> vectorOfRows {};
+    int rows = 1;
+    int columns = 1;
+  };
+
+  /* We have to understand how to pass the constructor to game through game(grid()). The matrix initialGrid copy the grid set up by the grid class */
+  
+  class game
+  {
+    public:
+
+    game(grid initialGrid);
+    void takeStep();
+    void printGridGame();
+    grid* getGridClass();
 
     private:
 
-    int rows;
-    int columns;     
-    char status;
-    std::vector<char> elementsInRow {};
-    std::vector<std::vector<char>> vectorOfRows {};
-    FILE *f;
+    grid gridPassed;
+    std::vector<char> temporaryRow {};
+    std::vector<std::vector<char>> temporaryGrid {};
   };
 
 } // end namespace

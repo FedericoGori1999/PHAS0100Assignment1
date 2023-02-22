@@ -43,18 +43,27 @@ TEST_CASE( "Instantiation of the class", "[ex1]" )
 
   /* Testing getGridElement. */
 
-  REQUIRE(gol::grid("glider.txt").getGridElement(10, 10) == '-');
-  REQUIRE(gol::grid("glider.txt").getGridElement(2, 3) == 'o');
-  REQUIRE(gol::grid("glider.txt").getGridElement(3, 1) == 'o');
+  REQUIRE(gol::grid("glider.txt").getGridElement(9, 9) == '-');
+  REQUIRE(gol::grid("glider.txt").getGridElement(1, 2) == 'o');
+  REQUIRE(gol::grid("glider.txt").getGridElement(2, 0) == 'o');
 }
+
+/* Counting the neighbours */
 
 TEST_CASE( "Counting the neighbours", "[ex2]" )
 {
-  REQUIRE(gol::grid("glider.txt").fetchNeighbours(2, 3) == 1);
-  REQUIRE(gol::grid("glider.txt").fetchNeighbours(10, 10) == 0);
-  REQUIRE(gol::grid("glider.txt").fetchNeighbours(4, 3) == 2);
+  REQUIRE(gol::grid("glider.txt").fetchNeighbours(1, 2) == 1);
+  REQUIRE(gol::grid("glider.txt").fetchNeighbours(9, 9) == 0);
+  REQUIRE(gol::grid("glider.txt").fetchNeighbours(3, 2) == 2);
 }
 
-TEST_CASE( "Simple add", "[MyFirstAddFunction]") {
-  REQUIRE( gol::MyFirstAddFunction(1, 2) == 3);
+/* Testing takeStep function. We have created the file gliderEvolution.txt that depicts the expected evolution of the configuration assumed in glider.txt*/
+
+TEST_CASE( "Take step testing", "[ex3]") 
+{
+  gol::grid gridToEvolve("glider.txt");
+  gol::grid gridResultExpected("gliderEvolution.txt");
+  gol::game gameOfLifeTest(gridToEvolve);
+  gameOfLifeTest.takeStep();
+  REQUIRE(gameOfLifeTest.getGridClass()->getGrid() == gridResultExpected.getGrid());
 }

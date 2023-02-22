@@ -19,7 +19,6 @@ namespace gol {
   /* The idea is to setup the grid as a 2D matrix, i.e. a vector of vectors, as shown below. This is a sample constructor that takes the char values to add as an input
   We must include the exception for other values inserted rather than '-' and 'o'. */
 
-
   grid::grid(int rowsArgument, int columnsArgument) : rows(rowsArgument), columns(columnsArgument)
   {
     if(rows == 0 || columns == 0)
@@ -150,13 +149,19 @@ namespace gol {
     vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1) = status;
   }
 
-  char grid::getGridElement(int rowCoordinate, int columnCoordinate)
+  char grid::getGridElementUser(int rowCoordinate, int columnCoordinate)
   {
-    //std::cout << "The status of the cell with coordinates (" << rowCoordinate << "," << columnCoordinate << ") is: " << vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1) << std::endl;
     return vectorOfRows.at(rowCoordinate-1).at(columnCoordinate-1);
   }
 
-  int grid::fetchNeighbours(int rowCoordinate, int columnCoordinate)
+  /* getGridElement takes the coordinates starting from (0, 0) as the first cell of the matrix. */
+
+  char grid::getGridElement(int rowCoordinate, int columnCoordinate)
+  {
+    return vectorOfRows.at(rowCoordinate).at(columnCoordinate);
+  }
+
+  int grid::fetchNeighboursUser(int rowCoordinate, int columnCoordinate)
   {
     status = getGridElement(rowCoordinate, columnCoordinate);
     int liveNeighbours = 0;
@@ -199,4 +204,130 @@ namespace gol {
       return liveNeighbours;
     }
   }
+
+  /* fetchNeighbours takes the coordinates starting from (0, 0) as the first cell of the matrix. */
+
+  int grid::fetchNeighbours(int rowCoordinate, int columnCoordinate)
+  {
+    status = getGridElement(rowCoordinate, columnCoordinate);
+    int liveNeighbours = 0;
+    int lowerLimitRow = rowCoordinate - 1;
+    int upperLimitRow = rowCoordinate + 1;
+    int lowerLimitColumn = columnCoordinate - 1;
+    int upperLimitColumn = columnCoordinate + 1;
+    if(rowCoordinate == 0)
+    {
+      lowerLimitRow++;
+    }
+    if(rowCoordinate == rows - 1)
+    {
+      upperLimitRow--;
+    }
+    if(columnCoordinate == 0)
+    {
+      lowerLimitColumn++;
+    }
+    if(columnCoordinate == columns - 1)
+    {
+      upperLimitColumn--;
+    }
+    for(int i = lowerLimitRow; i <= upperLimitRow; i++)
+    {
+      for(int j = lowerLimitColumn; j <= upperLimitColumn; j++)
+      {
+        if(vectorOfRows.at(i).at(j) == 'o')
+        {
+          liveNeighbours++;
+        }
+      }
+    }
+    if(vectorOfRows.at(rowCoordinate).at(columnCoordinate) == 'o')
+    {
+      return liveNeighbours-1;
+    }
+    else
+    {
+      return liveNeighbours;
+    }
+  }
+
+  int grid::getRows()
+  {
+    return rows;
+  }
+
+  int grid::getColumns()
+  {
+    return columns;
+  }
+
+  void grid::copyGrid(std::vector<std::vector<char>> gridToCopy)
+  {
+    vectorOfRows = gridToCopy;
+  }
+
+  std::vector<std::vector<char>> grid::getGrid()
+  {
+    return vectorOfRows;
+  }
+
+  /* We still have to test it */
+
+  game::game(grid initialGrid)
+  {
+    gridPassed = initialGrid;
+  }
+
+  /* We still have to test it */
+
+  void game::takeStep()
+  {
+    int i = 0;
+    int j = 0;
+    for(i = 0; i < gridPassed.getRows(); i++)
+    {
+      for(j = 0; j < gridPassed.getColumns(); j++)
+      {
+        if(gridPassed.getGridElement(i, j) == 'o')
+        {
+          if(gridPassed.fetchNeighbours(i, j) == 2 || gridPassed.fetchNeighbours(i, j) == 3)
+          {
+            temporaryRow.push_back('o');
+          }
+          else
+          {
+            temporaryRow.push_back('-');
+          }
+        }
+        else
+        {
+          if(gridPassed.fetchNeighbours(i, j) == 3)
+          {
+            temporaryRow.push_back('o');
+          }
+          else
+          {
+            temporaryRow.push_back('-');
+          }
+        }
+      }
+      temporaryGrid.push_back(temporaryRow);
+      temporaryRow.clear();
+    }
+    gridPassed.copyGrid(temporaryGrid);
+  }
+  
+  void game::printGridGame()
+    {
+      gridPassed.printGrid();
+      std::cout << "\n\n" << "Next step" << "\n\n" << std::endl;
+    }
+
+  grid* game::getGridClass()
+  {
+    return &gridPassed;
+  }
+  
+
+
 } // end namespace
