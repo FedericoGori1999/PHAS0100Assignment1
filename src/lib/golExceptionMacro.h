@@ -17,6 +17,6 @@
 
 #include "golException.h"
 
-#define golExceptionThrow() throw gol::Exception(__FILE__,__LINE__)
+#define golExceptionThrow() throw gol::Exception(__FILE__, __LINE__)
 
 #endif

@@ -17,10 +17,15 @@
 
 namespace gol {
 
-//-----------------------------------------------------------------------------
-int MyFirstAddFunction(int a, int b)
-{
-  return a + b;
+void gameOfLife(game gameToPlay, grid initialGrid, int iterations) {
+  std::cout << "The initial grid is the following one\n" << std::endl;
+  initialGrid.printGrid();
+  std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+  for (int i = 0; i < iterations; i++) {
+    gameToPlay.takeStep();
+    gameToPlay.printGridGame();
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+  }
 }
 
-} // end namespace
+} // namespace gol

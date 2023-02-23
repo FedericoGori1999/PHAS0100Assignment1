@@ -14,20 +14,17 @@
 
 #ifndef golMyFunctions_h
 #define golMyFunctions_h
+#include <golBasicTypes.h>
 
 /**
-* \file golMyFunctions.h
-* \brief Various Utilities.
-* \ingroup utilities
-*/
-namespace gol
-{
+ * \file golMyFunctions.h
+ * \brief Various Utilities.
+ * \ingroup utilities
+ */
+namespace gol {
 
-/**
-* \brief My first function, adds two integers.
-*/
-int MyFirstAddFunction(int a, int b);
+void gameOfLife(game gridToPlay, grid initialGrid, int iterations);
 
-} // end namespace
+} // namespace gol
 
 #endif
