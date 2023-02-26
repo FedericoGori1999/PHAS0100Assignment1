@@ -12,7 +12,7 @@
 
 =============================================================================*/
 
-#include "golBasicTypes.h"
+#include "golBasicClasses.h"
 
 namespace gol {
 
@@ -23,9 +23,6 @@ and 'o'. */
 
 grid::grid(int rowsArgument, int columnsArgument)
     : rows(rowsArgument), columns(columnsArgument) {
-  if (rows == 0 || columns == 0) {
-    throw std::logic_error("The grid cannot have 0 rows or 0 columns!");
-  }
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < columns; j++) {
       std::cin >> status;
@@ -41,12 +38,8 @@ grid::grid(int rowsArgument, int columnsArgument)
 
 grid::grid(int rowsArgument, int columnsArgument, int aliveCells)
     : rows(rowsArgument), columns(columnsArgument) {
-  if (rows == 0 || columns == 0) {
-    throw std::logic_error("The grid cannot have 0 rows or 0 columns!");
-  }
-  if (aliveCells > rows * columns) {
-    throw std::logic_error(
-        "We cannot have more alive cells than the number of available cells");
+  if (rows == 0 || columns == 0 || aliveCells > rows * columns) {
+    throw gol::ExceptionGrid(rows, columns, aliveCells);
   }
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < columns; j++) {
@@ -96,8 +89,7 @@ grid::grid(std::string fileName) {
   path = path + fileName;
   f = std::fopen(path.c_str(), "rw");
   if (!f) {
-    std::string err_msg = "Failed to open file " + fileName;
-    throw std::runtime_error(err_msg);
+    throw gol::ExceptionGrid(fileName, f);
   }
   int i = 0;
   int j = 0;
@@ -111,6 +103,8 @@ grid::grid(std::string fileName) {
       j = 0;
       i++;
       elementsInRow.clear();
+    } else if(status != ' ') {
+      throw gol::ExceptionGrid(status, i, j);
     }
   }
   vectorOfRows.push_back(elementsInRow);
@@ -221,19 +215,14 @@ int grid::getRows() { return rows; }
 int grid::getColumns() { return columns; }
 
 void grid::copyGrid(std::vector<std::vector<char>> &gridToCopy) {
-  /*for(int i = 0; i < rows; i++)
-  {
-    for(int j = 0; j < columns; j++)
-    {
-      vectorOfRows.at(i).at(j) = gridToCopy.at(i).at(j);
-    }
-  }*/
   vectorOfRows = std::move(gridToCopy);
 }
 
 std::vector<std::vector<char>> grid::getGrid() { return vectorOfRows; }
 
 game::game(grid initialGrid) { gridPassed = initialGrid; }
+
+game::~game(){}
 
 void game::takeStep() {
   int i = 0;

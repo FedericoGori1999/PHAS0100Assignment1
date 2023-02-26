@@ -18,6 +18,7 @@
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
+#include <iostream>
 
 namespace gol {
 
@@ -26,8 +27,58 @@ namespace gol {
  * \brief Base exception class.
  * \ingroup types
  */
-class Exception : public std::exception {
-public:
+
+class ExceptionGolSimulator : public std::exception {
+
+  public:
+  
+  ExceptionGolSimulator(int argc, std::string inputMethod, std::string helpString);
+  std::string whatProblem();
+
+  private:
+  std::string message;
+};
+
+class ExceptionGolStationaryPatterns : public std::exception
+{
+  public:
+  ExceptionGolStationaryPatterns(int argc, std::string helpString);
+  std::string whatProblem();
+
+  private:
+  std::string message;
+};
+
+class ExceptionGrid : public std::exception
+{
+  public:
+
+  ExceptionGrid(int rows, int columns, int aliveCells);
+  ExceptionGrid(std::string nameFile, FILE *f);
+  ExceptionGrid(char status, int rowCoordinate, int columnCoordinate);
+  std::string whatProblem();
+
+  private:
+  std::string message;
+
+};
+
+class ExceptionGame : public std::exception
+{
+  public:
+
+  ExceptionGame(int iterations);
+  std::string whatProblem();
+
+  private:
+  std::string message;
+};
+
+} // namespace gol
+
+#endif
+
+/*public:
   Exception(const std::string &fileName, int lineNumber);
   virtual ~Exception();
 
@@ -62,9 +113,4 @@ public:
 private:
   std::string m_Description;
   std::string m_FileName;
-  int m_LineNumber;
-};
-
-} // namespace gol
-
-#endif
+  int m_LineNumber;*/

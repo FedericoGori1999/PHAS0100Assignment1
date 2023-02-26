@@ -12,20 +12,23 @@
 
 =============================================================================*/
 
-#include "golMyFunctions.h"
-#include <iostream>
+#ifndef golMyFunctions_h
+#define golMyFunctions_h
+#include <golBasicClasses.h>
 
+/**
+ * \file golMyFunctions.h
+ * \brief Various Utilities.
+ * \ingroup utilities
+ */
 namespace gol {
 
-void gameOfLife(game gameToPlay, grid initialGrid, int iterations) {
-  std::cout << "The initial grid is the following one\n" << std::endl;
-  initialGrid.printGrid();
-  std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-  for (int i = 0; i < iterations; i++) {
-    gameToPlay.takeStep();
-    gameToPlay.printGridGame();
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-  }
-}
+void gameOfLife(game gridToPlay, grid initialGrid, int iterations);
+void searchStationaryPatterns(int rows, int columns, int aliveCells, int iterations);
+void reInitialiseGrid(grid* initialGrid, int rows, int columns, int aliveCells);
+void reInitialiseGame(game* gameToPlay, grid iniTialGrid);
+bool notAllDead(game gameToPlay);
 
 } // namespace gol
+
+#endif

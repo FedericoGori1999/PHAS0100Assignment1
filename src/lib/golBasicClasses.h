@@ -15,7 +15,6 @@
 #ifndef golBasicTypes_h
 #define golBasicTypes_h
 
-#pragma once
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -25,6 +24,7 @@
 #include <stdexcept>
 #include <thread>
 #include <vector>
+#include <golException.h>
 
 /**
  * \defgroup internal internal
@@ -98,7 +98,11 @@ private:
 
 class game {
 public:
+  
   game(grid initialGrid);
+  game() = default;
+  ~game();
+
   void takeStep();
   void printGridGame();
   grid *getGridClass();
