@@ -12,12 +12,10 @@
 
 =============================================================================*/
 
-#include <golBasicClasses.h>
+#include <golGameClass.h>
 #include <golExceptionMacro.h>
-#include <golBasicFunctions.h>
-#include <iostream>
-#include <stdexcept>
-#include <string>
+#include <golFunctions.h>
+
 
 int main(int argc, char **argv)
 {

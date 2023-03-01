@@ -12,15 +12,13 @@
 
 =============================================================================*/
 
-#ifndef golMyFunctions_h
-#define golMyFunctions_h
-#include <golBasicClasses.h>
+#ifndef golFunctions_h
+#define golFunctions_h
 
-/**
- * \file golMyFunctions.h
- * \brief Various Utilities.
- * \ingroup utilities
- */
+#include <golGameClass.h>
+
+/* See .cpp file for explanation of functions and behaviours. */
+
 namespace gol {
 
 void gameOfLife(game gridToPlay, grid initialGrid, int iterations);

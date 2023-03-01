@@ -21,41 +21,45 @@ ExceptionGolSimulator::ExceptionGolSimulator(int argc, std::string inputMethod, 
 {
   if(argc == 1 || helpString == "-h")
   {
-    /* Help message */
+    /* Help message displayed for golSimulator*/
 
     message = "Please launch the app from terminal with the following "
-          "command:\n\n./build/bin/golSimulator *typeOfInput* "
-          "*argumentsInput* *nGenerations* *-h*\n\nThe arguments have "
+          "command:\n\n./build/bin/golSimulator <typeOfInput> "
+          "<argumentsInput> <nGenerations> <-h>\n\nThe arguments have "
           "the following meaning:\n"
-          "-> *typeInput* is 'file' or 'random':\n"
+          "-> <typeInput> is 'file' or 'random':\n"
           "   -> if 'file' the program will expect a file in input, "
-          "where it will read the initial grid\n"
+          "from which it will read the initial grid\n"
           "   -> If 'random', it will expect a random initialisation "
           "of the grid\n\n"
-          "-> *argumentsInput* are the arguments depending on the "
-          "choice made in *typeInput*. Specifically:\n"
-          "   -> if *typeInput* == 0, then *argumentsInput* should be "
-          "a string *nameFile.txt*\n"
-          "   -> if *typeInput* == 1, then *argumentsInput* should "
-          "expect 3 numbers *numRows*, *numColumns* and *aliveCell*, "
+          "-> <argumentsInput> are the arguments depending on the "
+          "choice made in <typeInput>. Specifically:\n"
+          "   -> if <typeInput> == file, then <argumentsInput> should expect "
+          "2 strings: <run> (this argument has been implemented for testing purposes) and <nameFile.txt>\n"
+          "   -> if <typeInput> == random, then <argumentsInput> should "
+          "expect 3 numbers <numRows>, <numColumns> and <aliveCell>, "
           "which will be passed to the random constructor\n\n"
-          "-> *nGenerations* is the number of generations to simulate "
-          "with takeStep()\n\n"
-          "-> *-h* will let you read this message again\n";
+          "-> <nGenerations> is the number of generations to simulate "
+          "with the takeStep() fucntion\n\n"
+          "-> <-h> will let you read this message again\n";
   }
   else
   {
     if(inputMethod == "file")
     {
-      /* Four arguments are expected for the program to run if it reads from file. */
+      /* Five arguments are expected for the program to run if it reads from file. */
 
-      if (argc < 3)
+      if (argc < 5)
       {
-        message = "\nThe name of the file is missing in the arguments! Please try again.\n";
+        /* Less arguments than expected.*/
+
+        message = "\nFewer arguments than expected! Please launch ./build/bin/golSimulator or use -h as last argument to see how you should call the program.\n";
       }
-      else if (argc != 4)
+      else if (argc > 5)
       {
-        message = "\nError in calling the program: number of arguments in command line is different than expected. Use -h as argument in command line to see the expected arguments.\n";
+        /* More arguments than expected.*/
+
+        message = "\nToo many arguments! Please launch ./build/bin/golSimulator or use -h as last argument to see how you should call the program.\n";
       }
     }
     else if(inputMethod == "random")
@@ -64,21 +68,27 @@ ExceptionGolSimulator::ExceptionGolSimulator(int argc, std::string inputMethod, 
 
       if(argc < 6)
       {
-        message = "\nToo few arguments! Please launch -h as last argument to see how you should use the random constructor.\n";
+        /* Less arguments than expected.*/
+
+        message = "\nFewer arguments than expected! Please launch ./build/bin/golSimulator or use -h as last argument to see how you should call the program.\n";
       }
-      else if(argc != 6)
+      else if(argc > 6)
       {
-        message = "\nToo many arguments! Please launch -h as last argument to see how you should use the random constructor.\n";
+        /* More arguments than expected.*/
+
+        message = "\nToo many arguments! Please launch ./build/bin/golSimulator or use -h as last argument to see how you should call the program.\n";
       }
     }
     else
     {
-      /* Error in specifying the type of input */
+      /* Error in specifying the type of input (neither file or random).*/
       
-      message = "\nType of input selected not correct! Retry.\n";
+      message = "\nType of input selected not correct! Please launch ./build/bin/golSimulator or use -h as last argument to see how you should call the program.\n";
     }
   }
 }
+
+/* This function prints out the message string.*/
 
 std::string ExceptionGolSimulator::whatProblem()
 {
@@ -92,27 +102,31 @@ ExceptionGolStationaryPatterns::ExceptionGolStationaryPatterns(int argc, std::st
     /* Help message */
 
     message = "Please launch the app from terminal with the following command\n\n" 
-    "./golStationaryPatterns *rows* *columns* *aliveCells* *iterations* *-h*\n\n"
+    "./golStationaryPatterns <rows> <columns> <aliveCells> <iterations> <-h>\n\n"
     "where:\n\n"
-    "-> *rows* is the number of rows of the grid\n"
-    "-> *columns* is the number of columns of the grid\n"
-    "-> *aliveCells* is the number of alive cells put initially in the grid\n"
-    "-> *iterations* is the number of iterations that the program has to make in order to find stationary patterns\n"
-    "-> *-h* will let you read this message again\n";
+    "-> <rows> is the number of rows of the grid\n"
+    "-> <columns> is the number of columns of the grid\n"
+    "-> <aliveCells> is the number of alive cells put initially in the grid\n"
+    "-> <iterations> is the number of iterations that the program has to make in order to find stationary patterns\n"
+    "-> <-h> will let you read this message again\n";
   }
   else
   {
-    /* 5 is the correct number of parameters if we use the random grid. If argc < 5, some initial parameters are missing */
+    /* 5 is the correct number of parameters if we use the random grid.*/
 
     if (argc < 5)
     {
-      message = "\nToo few arguments! Please launch -h as last argument to see how you should use the program.\n";
+      /* Less arguments than expected.*/
+
+      message = "\nFewer arguments than expected! Please launch ./build/bin/golStationaryPatterns or use -h as last argument to see how you should use the program.\n";
     }
     else
     {
       if(argc > 5)
       {
-        message = "\nToo many arguments! Please launch -h as last argument to see how you should use the program.\n";
+        /* More arguments than expected.*/
+
+        message = "\nToo many arguments! Please launch ./build/bin/golStationaryPatterns or use -h as last argument to see how you should use the program.\n";
       }
     }
   }
@@ -127,37 +141,58 @@ ExceptionGrid::ExceptionGrid(int rows, int columns, int aliveCells)
 {
   if(rows == 0 || columns == 0)
   {
+    /* Grid cannot have one of the dimensions equal to 0.*/
+
     message = "\nThe grid cannot have 0 rows or 0 columns!\n";
   }
   else
   {
     if(aliveCells == 0)
     {
+      /* Empty grid selected.*/
+
       message = "\nWarning: you have placed 0 alive cells!\n";
     }
     if(aliveCells > rows * columns)
     {
-      message = "\nYou cannot place more alive cells than available cells in the grid! Retry\n";
+      /* More alive cells than available cells in the grid.*/
+
+      message = "\nYou cannot place more alive cells than available cells in the grid!\n";
     }
   }
 }
 
-ExceptionGrid::ExceptionGrid(std::string nameFile, FILE *f)
+ExceptionGrid::ExceptionGrid(std::string nameFile, FILE *f, std::string testOrRun)
 {
-  if(!f)
+  if(testOrRun != "run" && testOrRun != "test")
   {
-    message = "\nThe file " + nameFile + " is missing! Please try again.\n";
+    /* Use the 'run' keyword to run the program. 'test' is used only for testing (it specifies a different relative path).*/
+
+    message = "\nInvalid call of the program! Please use 'run' after the 'file' argument.\n";
+  }
+  else
+  {
+    if(!f)
+    {
+      /* File is missing.*/
+
+      message = "\nThe file " + nameFile + " is missing! Please try again.\n";
+    }
+    else
+    {
+      message = "Empty file!";
+    }
   }
 }
 
 ExceptionGrid::ExceptionGrid(char status, int rowCoordinate, int columnCoordinate)
 {
   std::string charToString(1, status);
-  //std::cout << status << std::endl;
   if (status != 'o' && status != 'o' && status != ' ' && status != '\n');
   {
+    /* Character read is neither 'o' or '-'.*/
+
     message = "\nInvalid character '" + charToString + "' in input from file (position (" + std::to_string(rowCoordinate+1) + "," + std::to_string(columnCoordinate+1) + "))! Please try again.\n";
-    // (position (" + rowCoordinate + "," + columnCoordinate + ""))
   }
 }
 
@@ -170,7 +205,9 @@ ExceptionGame::ExceptionGame(int iterations)
 {
   if(iterations == 0)
   {
-    message = "\nYou have requested 0 iterations! Retry.\n";
+    /* 0 iterations requested: no game of life.*/
+    
+    message = "\nYou have requested 0 iterations!\n";
   }
 }
 
@@ -181,31 +218,3 @@ std::string ExceptionGame::whatProblem()
 
 
 } // namespace gol
-
-
-/*
-//-----------------------------------------------------------------------------
-Exception::Exception(const std::string &fileName, int lineNumber)
-    : std::exception(), m_Description(""), m_FileName(fileName),
-      m_LineNumber(lineNumber) {}
-
-//-----------------------------------------------------------------------------
-Exception::~Exception() {}
-
-//-----------------------------------------------------------------------------
-std::string Exception::GetFileName() const { return m_FileName; }
-
-//-----------------------------------------------------------------------------
-int Exception::GetLineNumber() const { return m_LineNumber; }
-
-//-----------------------------------------------------------------------------
-std::string Exception::GetDescription() const { return m_Description; }
-
-//-----------------------------------------------------------------------------
-void Exception::SetDescription(const std::string &desc) {
-  m_Description = desc;
-}
-
-//-----------------------------------------------------------------------------
-const char *Exception::What() { return m_Description.c_str(); }
-*/

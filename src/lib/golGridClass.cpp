@@ -12,14 +12,14 @@
 
 =============================================================================*/
 
-#include "golBasicClasses.h"
+#include <golGridClass.h>
+
 
 namespace gol {
 
-/* The idea is to setup the grid as a 2D matrix, i.e. a vector of vectors, as
-shown below. This is a sample constructor that takes the char values to add as
-an input We must include the exception for other values inserted rather than '-'
-and 'o'. */
+/* Setting the grid: The idea is to setup the grid as a 2D matrix, i.e. a vector of vectors. */
+
+/* Initial constructor, never used in the program. */
 
 grid::grid(int rowsArgument, int columnsArgument)
     : rows(rowsArgument), columns(columnsArgument) {
@@ -34,11 +34,11 @@ grid::grid(int rowsArgument, int columnsArgument)
 }
 
 /* This constructor generates the grid randomly having taken as an input the
- * number of alive cells that should be in the grid */
+ * number of alive cells that should be in the grid and the dimensions of the grid. */
 
 grid::grid(int rowsArgument, int columnsArgument, int aliveCells)
     : rows(rowsArgument), columns(columnsArgument) {
-  if (rows == 0 || columns == 0 || aliveCells > rows * columns) {
+  if (rows == 0 || columns == 0 || aliveCells > rows * columns || aliveCells == 0) {
     throw gol::ExceptionGrid(rows, columns, aliveCells);
   }
   for (int i = 0; i < rows; i++) {
@@ -54,29 +54,17 @@ grid::grid(int rowsArgument, int columnsArgument, int aliveCells)
   std::vector<int> placeAliveCells(aliveCells);
   std::vector<int> numbersToDraw{};
 
-  /* In order to generate the random places in the matrix where we should put
-  the alive cells, we have created a sorted vector with all the elements of the
-  matrix, then with shuffle we have shuffled the vectors and then extract the
-  required number of cells to put alive, which is aliveCells. We have done this
-  to avoid repetition in the generated random numbers */
+  /* In order to generate the random places in the matrix where we should put the alive cells, we have created a sorted vector of int with all the places of the
+  matrix, then with std::shuffle we have shuffled the vector and then extract the required number of cells to put alive, which is aliveCells. We have done this
+  to avoid repetition in the generated random numbers. */
 
-  for (int k = 0; k < rows * columns - 1; k++) {
+  for (int k = 0; k < rows * columns ; k++) {
     numbersToDraw.push_back(k);
   }
   std::shuffle(numbersToDraw.begin(), numbersToDraw.end(), generator);
   for (int k = 0; k < aliveCells; k++) {
     placeAliveCells.at(k) = numbersToDraw.at(k);
   }
-
-  /* This piece of code was to test the shuffling of the numbers
-
-  for(int k = 0; k < aliveCells; k++)
-  {
-    std::cout << placeAliveCells.at(k) << std::endl;
-  }
-
-  End of comment */
-
   for (int it = 0; it < aliveCells; it++) {
     int positionInTheRow = placeAliveCells.at(it) / columns;
     int positionInTheColumn = placeAliveCells.at(it) % columns;
@@ -84,12 +72,25 @@ grid::grid(int rowsArgument, int columnsArgument, int aliveCells)
   }
 }
 
-grid::grid(std::string fileName) {
-  std::string path = "test/data/";
-  path = path + fileName;
+/* Constructor from file for the grid. The keyword 'test' specifies a different path for the search of the file, because ctest is working under build.*/
+
+grid::grid(std::string fileName, std::string testOrRun) {
+  std::string path = "";
+  if (testOrRun == "run")
+  {
+    path = "test/data/" + fileName;  
+  }
+  else if(testOrRun == "test")
+  {
+    path = "../../test/data/" + fileName;
+  }
+  else
+  {
+    throw gol::ExceptionGrid(fileName, f, testOrRun);
+  }
   f = std::fopen(path.c_str(), "rw");
   if (!f) {
-    throw gol::ExceptionGrid(fileName, f);
+    throw gol::ExceptionGrid(fileName, f, testOrRun);
   }
   int i = 0;
   int j = 0;
@@ -107,12 +108,20 @@ grid::grid(std::string fileName) {
       throw gol::ExceptionGrid(status, i, j);
     }
   }
+  if(i == 0 && j == 0)
+  {
+    throw gol::ExceptionGrid(fileName, f, testOrRun);
+  }
   vectorOfRows.push_back(elementsInRow);
   rows = i + 1;
   fclose(f);
 }
 
+/* Destructor of the grid. */
+
 grid::~grid() {}
+
+/* printGrid() allows you to print the grid. */
 
 void grid::printGrid() {
   for (int i = 0; i < rows; i++) {
@@ -123,59 +132,22 @@ void grid::printGrid() {
   }
 }
 
+/* setGridElement() allows you to set a particular element in the grid given the coordinates (starts counting coordinates from 0).*/
+
 void grid::setGridElement(int rowCoordinate, int columnCoordinate) {
   std::cout << "Insert the status of the cell with coordinates ("
-            << rowCoordinate << "," << columnCoordinate << "):" << std::endl;
+            << rowCoordinate + 1 << "," << columnCoordinate + 1 << "):" << std::endl;
   std::cin >> status;
-  vectorOfRows.at(rowCoordinate - 1).at(columnCoordinate - 1) = status;
+  vectorOfRows.at(rowCoordinate).at(columnCoordinate) = status;
 }
 
-char grid::getGridElementUser(int rowCoordinate, int columnCoordinate) {
-  return vectorOfRows.at(rowCoordinate - 1).at(columnCoordinate - 1);
-}
-
-/* getGridElement takes the coordinates starting from (0, 0) as the first cell
- * of the matrix. */
+/* getGridElement takes the coordinates (starting from (0, 0) as the first cell) in input and gives in output the character in that cell.*/
 
 char grid::getGridElement(int rowCoordinate, int columnCoordinate) {
   return vectorOfRows.at(rowCoordinate).at(columnCoordinate);
 }
 
-int grid::fetchNeighboursUser(int rowCoordinate, int columnCoordinate) {
-  status = getGridElement(rowCoordinate, columnCoordinate);
-  int liveNeighbours = 0;
-  int lowerLimitRow = rowCoordinate - 2;
-  int upperLimitRow = rowCoordinate;
-  int lowerLimitColumn = columnCoordinate - 2;
-  int upperLimitColumn = columnCoordinate;
-  if (rowCoordinate == 1) {
-    lowerLimitRow++;
-  }
-  if (rowCoordinate == rows) {
-    upperLimitRow--;
-  }
-  if (columnCoordinate == 1) {
-    lowerLimitColumn++;
-  }
-  if (columnCoordinate == columns) {
-    upperLimitColumn--;
-  }
-  for (int i = lowerLimitRow; i <= upperLimitRow; i++) {
-    for (int j = lowerLimitColumn; j <= upperLimitColumn; j++) {
-      if (vectorOfRows.at(i).at(j) == 'o') {
-        liveNeighbours++;
-      }
-    }
-  }
-  if (vectorOfRows.at(rowCoordinate - 1).at(columnCoordinate - 1) == 'o') {
-    return liveNeighbours - 1;
-  } else {
-    return liveNeighbours;
-  }
-}
-
-/* fetchNeighbours takes the coordinates starting from (0, 0) as the first cell
- * of the matrix. */
+/* fetchNeighbours counts the neighbours of a given cell that are alive (starts counting coordinates from 0). */
 
 int grid::fetchNeighbours(int rowCoordinate, int columnCoordinate) {
   status = getGridElement(rowCoordinate, columnCoordinate);
@@ -210,54 +182,22 @@ int grid::fetchNeighbours(int rowCoordinate, int columnCoordinate) {
   }
 }
 
+/* getRows() gives back the number of rows of the grid as output. */
+
 int grid::getRows() { return rows; }
 
+/* getColumns() gives back the number of columns of the grid as output. */
+
 int grid::getColumns() { return columns; }
+
+/* copyGrid() copies the grid received in input in the called grid's object.*/
 
 void grid::copyGrid(std::vector<std::vector<char>> &gridToCopy) {
   vectorOfRows = std::move(gridToCopy);
 }
 
+/* getGrid() gives as an output the matrix of a given grid object.*/
+
 std::vector<std::vector<char>> grid::getGrid() { return vectorOfRows; }
-
-game::game(grid initialGrid) { gridPassed = initialGrid; }
-
-game::~game(){}
-
-void game::takeStep() {
-  int i = 0;
-  int j = 0;
-  for (i = 0; i < gridPassed.getRows(); i++) {
-    for (j = 0; j < gridPassed.getColumns(); j++) {
-      if (gridPassed.getGridElement(i, j) == 'o') {
-        if (gridPassed.fetchNeighbours(i, j) == 2 ||
-            gridPassed.fetchNeighbours(i, j) == 3) {
-          temporaryRow.push_back('o');
-        } else {
-          temporaryRow.push_back('-');
-        }
-      } else {
-        if (gridPassed.fetchNeighbours(i, j) == 3) {
-          temporaryRow.push_back('o');
-        } else {
-          temporaryRow.push_back('-');
-        }
-      }
-    }
-    temporaryGrid.push_back(temporaryRow);
-    temporaryRow.clear();
-  }
-  gridPassed.copyGrid(temporaryGrid);
-}
-
-void game::printGridGame() {
-  std::cout << "\n"
-            << "Next step"
-            << "\n"
-            << std::endl;
-  gridPassed.printGrid();
-}
-
-grid *game::getGridClass() { return &gridPassed; }
 
 } // namespace gol

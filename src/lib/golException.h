@@ -20,13 +20,9 @@
 #include <stdexcept>
 #include <iostream>
 
-namespace gol {
+/* See .cpp file for explanation of functions and behaviours. */
 
-/**
- * \class Exception
- * \brief Base exception class.
- * \ingroup types
- */
+namespace gol {
 
 class ExceptionGolSimulator : public std::exception {
 
@@ -54,7 +50,7 @@ class ExceptionGrid : public std::exception
   public:
 
   ExceptionGrid(int rows, int columns, int aliveCells);
-  ExceptionGrid(std::string nameFile, FILE *f);
+  ExceptionGrid(std::string nameFile, FILE *f, std::string testOrRun);
   ExceptionGrid(char status, int rowCoordinate, int columnCoordinate);
   std::string whatProblem();
 
@@ -77,40 +73,3 @@ class ExceptionGame : public std::exception
 } // namespace gol
 
 #endif
-
-/*public:
-  Exception(const std::string &fileName, int lineNumber);
-  virtual ~Exception();
-
-  std::string GetFileName() const;
-  int GetLineNumber() const;
-
-  std::string GetDescription() const;
-  void SetDescription(const std::string &desc);
-  virtual const char *What();
-
-  Exception &operator<<(std::ostream &(*func)(std::ostream &)) {
-    std::ostringstream ss;
-    ss << this->GetDescription() << func;
-    this->SetDescription(ss.str());
-    return *this;
-  }
-
-  template <class T> inline Exception &operator<<(T &data) {
-    std::ostringstream ss;
-    ss << this->GetDescription() << data;
-    this->SetDescription(ss.str());
-    return *this;
-  }
-
-  template <class T> inline Exception &operator<<(const T &data) {
-    std::ostringstream ss;
-    ss << this->GetDescription() << data;
-    this->SetDescription(ss.str());
-    return *this;
-  }
-
-private:
-  std::string m_Description;
-  std::string m_FileName;
-  int m_LineNumber;*/

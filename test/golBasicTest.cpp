@@ -13,61 +13,36 @@
 =============================================================================*/
 
 #include "catch.hpp"
-#include "golBasicClasses.h"
+#include <golGameClass.h>
 #include "golCatchMain.h"
-#include "golBasicFunctions.h"
-#include <iostream>
-#include <vector>
+#include <golFunctions.h>
 
-TEST_CASE("Instantiation of the class", "[ex1]") {
-  /* Testing instantiations of the grid classes for the random constructed grid
-  (apart from the part in which we have to give an input for the state of the
-  cell, the construction of the grid is the same, so we can test directly the
-  random generated one). */
 
-  REQUIRE_NOTHROW(gol::grid(5, 5, 4));
+/* Testing getGridElement(). */
 
-  /* We require an exception thrown for grids that have one of the two
-   * dimensions that are 0 (testing on the random grid setup constructor) */
-
-  REQUIRE_THROWS(gol::grid(0, 2, 1));
-  REQUIRE_THROWS(gol::grid(1, 0, 0)); // Implement exception when one of the dimension is zero.
-
-  /* Here we require an exception thrown if the number of alive cells is
-   * superior than the number of cells in the grid. */
-
-  REQUIRE_THROWS(gol::grid(2, 2, 5));
-
-  /* Here we test if the grid is correctly built from the read of an external
-   * file. We throw an exception if the reading part fails. */
-
-  REQUIRE_NOTHROW(gol::grid("glider.txt"));
-  REQUIRE_NOTHROW(gol::grid("oscillators.txt"));
-  REQUIRE_NOTHROW(gol::grid("still_lifes.txt"));
-
-  /* Testing getGridElement. */
-
-  REQUIRE(gol::grid("glider.txt").getGridElement(9, 9) == '-');
-  REQUIRE(gol::grid("glider.txt").getGridElement(1, 2) == 'o');
-  REQUIRE(gol::grid("glider.txt").getGridElement(2, 0) == 'o');
+TEST_CASE("Testing getGridElement()", "[ex3]")
+{
+  REQUIRE(gol::grid("glider.txt", "test").getGridElement(9, 9) == '-');
+  REQUIRE(gol::grid("glider.txt", "test").getGridElement(1, 2) == 'o');
+  REQUIRE(gol::grid("glider.txt", "test").getGridElement(2, 0) == 'o');
 }
 
-/* Counting the neighbours */
+/* Testing fetchNeighbours().*/
 
-TEST_CASE("Counting the neighbours", "[ex2]") {
-  REQUIRE(gol::grid("glider.txt").fetchNeighbours(1, 2) == 1);
-  REQUIRE(gol::grid("glider.txt").fetchNeighbours(9, 9) == 0);
-  REQUIRE(gol::grid("glider.txt").fetchNeighbours(3, 2) == 2);
+TEST_CASE("Counting the neighbours", "[ex4]") {
+  std::string path = "../../";
+  REQUIRE(gol::grid("glider.txt", "test").fetchNeighbours(1, 2) == 1);
+  REQUIRE(gol::grid("glider.txt", "test").fetchNeighbours(9, 9) == 0);
+  REQUIRE(gol::grid("glider.txt", "test").fetchNeighbours(3, 2) == 2);
 }
 
-/* Testing takeStep function. We have created the file gliderEvolution.txt that
- * depicts the expected evolution of the configuration assumed in glider.txt*/
+/* Testing takeStep(). We have created the file gliderEvolution.txt that depicts the expected evolution after one step of the configuration assumed in glider.txt.*/
 
-TEST_CASE("Take step testing", "[ex3]") {
-  gol::grid gridToEvolve("glider.txt");
-  gol::grid gridResultExpected("gliderEvolution.txt");
+TEST_CASE("Take step testing", "[ex5]") {
+  gol::grid gridToEvolve("glider.txt", "test");
+  gol::grid gridResultExpected("gliderEvolution.txt", "test");
   gol::game gameOfLifeTest(gridToEvolve);
   gameOfLifeTest.takeStep();
-  REQUIRE(gameOfLifeTest.getGridClass()->getGrid() ==
+  REQUIRE(gameOfLifeTest.getObjectGrid()->getGrid() ==
           gridResultExpected.getGrid());
 }

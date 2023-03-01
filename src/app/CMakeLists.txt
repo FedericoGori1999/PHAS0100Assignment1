@@ -12,17 +12,9 @@
 #
 #============================================================================*/
 
-#set(_command_line_apps
-#  golSimulator
-#)
-
 set(_command_line_apps
   golStationaryPatterns golSimulator
 )
-
-#add_executable(golSimulator)
-
-#target_sources(golSimulator PUBLIC golMyFirstApp.cpp)
 
 foreach(_app ${_command_line_apps})
   add_executable(${_app} ${_app}.cpp)

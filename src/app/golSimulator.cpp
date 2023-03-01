@@ -12,12 +12,10 @@
 
 =============================================================================*/
 
-#include <golBasicClasses.h>
+#include <golGameClass.h>
 #include <golExceptionMacro.h>
-#include <golBasicFunctions.h>
-#include <iostream>
-#include <stdexcept>
-#include <string>
+#include <golFunctions.h>
+
 
 int main(int argc, char **argv) {
   int returnStatus = EXIT_FAILURE;
@@ -29,19 +27,24 @@ int main(int argc, char **argv) {
     if(argc > 1)
     {
       inputMethod = argv[1];
-      //helpString = argv[argc - 1];
     }
-    if (argc == 1 || helpString == "-h" || inputMethod == "file" && argc != 4 || inputMethod == "random" && argc != 6 || inputMethod != "file" && inputMethod != "random") {
+    if (argc == 1 || helpString == "-h" || inputMethod == "file" && argc != 5 || inputMethod == "random" && argc != 6 || inputMethod != "file" && inputMethod != "random") {
       throw gol::ExceptionGolSimulator(argc, inputMethod, helpString);
     }
     if (inputMethod == "file") {
 
       /* Here the program initializes the grid from file */
 
-      std::string fileInput = argv[2];
-      gol::grid initialGrid(fileInput);
+      std::string runCommand = argv[2];
+      if(runCommand == "test")
+      {
+        std::cout << "\nYou cannot call 'test' explicitly! It serves only for testing purposes.\n" << std::endl;
+        return returnStatus;
+      }
+      std::string fileInput = argv[3];
+      gol::grid initialGrid(fileInput, runCommand);
       gol::game gameToPlay(initialGrid);
-      iterationsToInt = argv[3];
+      iterationsToInt = argv[4];
       int iterations = std::stoi(iterationsToInt);
       if(iterations == 0)
       {
@@ -87,24 +90,3 @@ int main(int argc, char **argv) {
   }
   return returnStatus;
 }
-
-/* To implement: searching for still lives and manage exceptions */
-
-/*int returnStatus = EXIT_FAILURE;
-
-  try
-  {
-    throw std::runtime_error("Something went wrong!");
-
-    returnStatus = EXIT_SUCCESS;
-  }
-  catch (gol::Exception& e)
-  {
-    std::cerr << "Caught gol::Exception: " << e.GetDescription() << std::endl;
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << "Caught std::exception: " << e.what() << std::endl;
-  }
-
-  return returnStatus;*/
