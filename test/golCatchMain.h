@@ -15,13 +15,11 @@
 #ifndef golCatchMain_h
 #define golCatchMain_h
 
-namespace gol
-{
+namespace gol {
 
 extern int argc;
-extern char** argv;
+extern char **argv;
 
-} // end namespace
+} // namespace gol
 
 #endif
-

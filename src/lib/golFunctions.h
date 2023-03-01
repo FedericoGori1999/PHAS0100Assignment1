@@ -22,9 +22,10 @@
 namespace gol {
 
 void gameOfLife(game gridToPlay, grid initialGrid, int iterations);
-void searchStationaryPatterns(int rows, int columns, int aliveCells, int iterations);
-void reInitialiseGrid(grid* initialGrid, int rows, int columns, int aliveCells);
-void reInitialiseGame(game* gameToPlay, grid iniTialGrid);
+void searchStationaryPatterns(int rows, int columns, int aliveCells,
+                              int iterations);
+void reInitialiseGrid(grid *initialGrid, int rows, int columns, int aliveCells);
+void reInitialiseGame(game *gameToPlay, grid iniTialGrid);
 bool notAllDead(game gameToPlay);
 
 } // namespace gol

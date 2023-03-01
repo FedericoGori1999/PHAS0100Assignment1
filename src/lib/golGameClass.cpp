@@ -14,18 +14,19 @@
 
 #include <golGameClass.h>
 
-
 namespace gol {
 
-/* This constructor of the game object takes as input a grid object and copy it in the private grid object of the class.*/
+/* This constructor of the game object takes as input a grid object and copy it
+ * in the private grid object of the class.*/
 
 game::game(grid initialGrid) { gridStored = initialGrid; }
 
 /* Default destructor of the game object.*/
 
-game::~game(){}
+game::~game() {}
 
-/* takeStep() takes as input a game object and evolve its grid under the rules of the Game of Life.*/
+/* takeStep() takes as input a game object and evolve its grid under the rules
+ * of the Game of Life.*/
 
 void game::takeStep() {
   int i = 0;
@@ -53,8 +54,9 @@ void game::takeStep() {
   gridStored.copyGrid(temporaryGrid);
 }
 
-/* The function printGame() calls the printGrid() function of the private grid object in the game object as many times as the number of iterations require, 
-and add a delimitator between the various iterations that are printed.*/
+/* The function printGame() calls the printGrid() function of the private grid
+object in the game object as many times as the number of iterations require, and
+add a delimitator between the various iterations that are printed.*/
 
 void game::printGame() {
   std::cout << "\n"
@@ -64,7 +66,8 @@ void game::printGame() {
   gridStored.printGrid();
 }
 
-/* getObjectGrid() gives back as output a pointer to the private grid object of the game object.*/
+/* getObjectGrid() gives back as output a pointer to the private grid object of
+ * the game object.*/
 
 grid *game::getObjectGrid() { return &gridStored; }
 

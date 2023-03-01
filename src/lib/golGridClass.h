@@ -19,20 +19,19 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
+#include <golException.h>
 #include <iostream>
 #include <memory>
 #include <random>
 #include <stdexcept>
 #include <thread>
 #include <vector>
-#include <golException.h>
 
 /* See .cpp file for explanation of functions and behaviours. */
 
 namespace gol {
 class grid {
 public:
-
   grid(int rowsArgument, int columnsArgument);
   grid(int rowsArgument, int columnsArgument, int aliveCells);
   grid(std::string fileName, std::string testOrRun);

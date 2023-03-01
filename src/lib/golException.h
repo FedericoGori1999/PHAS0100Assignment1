@@ -15,10 +15,10 @@
 #ifndef golException_h
 #define golException_h
 
+#include <iostream>
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
-#include <iostream>
 
 /* See .cpp file for explanation of functions and behaviours. */
 
@@ -26,47 +26,41 @@ namespace gol {
 
 class ExceptionGolSimulator : public std::exception {
 
-  public:
-  
-  ExceptionGolSimulator(int argc, std::string inputMethod, std::string helpString);
+public:
+  ExceptionGolSimulator(int argc, std::string inputMethod,
+                        std::string helpString);
   std::string whatProblem();
 
-  private:
+private:
   std::string message;
 };
 
-class ExceptionGolStationaryPatterns : public std::exception
-{
-  public:
+class ExceptionGolStationaryPatterns : public std::exception {
+public:
   ExceptionGolStationaryPatterns(int argc, std::string helpString);
   std::string whatProblem();
 
-  private:
+private:
   std::string message;
 };
 
-class ExceptionGrid : public std::exception
-{
-  public:
-
+class ExceptionGrid : public std::exception {
+public:
   ExceptionGrid(int rows, int columns, int aliveCells);
   ExceptionGrid(std::string nameFile, FILE *f, std::string testOrRun);
   ExceptionGrid(char status, int rowCoordinate, int columnCoordinate);
   std::string whatProblem();
 
-  private:
+private:
   std::string message;
-
 };
 
-class ExceptionGame : public std::exception
-{
-  public:
-
+class ExceptionGame : public std::exception {
+public:
   ExceptionGame(int iterations);
   std::string whatProblem();
 
-  private:
+private:
   std::string message;
 };
 

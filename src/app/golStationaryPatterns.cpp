@@ -12,20 +12,17 @@
 
 =============================================================================*/
 
-#include <golGameClass.h>
 #include <golExceptionMacro.h>
 #include <golFunctions.h>
+#include <golGameClass.h>
 
-
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   int returnStatus = EXIT_FAILURE;
   try {
     std::vector<int> arguments{};
     std::string iterationsToInt = "null";
     std::string helpString = argv[argc - 1];
-    if(argc == 1 || argv[1] == "-h" || argc != 5)
-    {
+    if (argc == 1 || argv[1] == "-h" || argc != 5) {
       throw gol::ExceptionGolStationaryPatterns(argc, helpString);
     }
     std::string rowToInt = argv[1];
@@ -41,8 +38,7 @@ int main(int argc, char **argv)
     gol::searchStationaryPatterns(row, column, aliveCells, iterations);
     std::cout << "\nEnd of the game\n" << std::endl;
     returnStatus = EXIT_SUCCESS;
-    }
-    catch (gol::ExceptionGolStationaryPatterns e) {
+  } catch (gol::ExceptionGolStationaryPatterns e) {
     std::cout << e.whatProblem() << std::endl;
   }
   return returnStatus;
