@@ -33,6 +33,6 @@ endforeach()
 # Dont forget its:  add_test(<test name (globally unique) > <exe name> <argument1> <argument2>
 ##################################################################################################
 
-add_test(operationsOnTheGrid ${EXECUTABLE_OUTPUT_PATH}/golBasicTest ${DATA_DIR}/glider.txt ${DATA_DIR}/gliderEvolution.txt)
 add_test(instantiationGrid ${EXECUTABLE_OUTPUT_PATH}/golCommandLineArgsTest ${DATA_DIR}/glider.txt ${DATA_DIR}/oscillators.txt ${DATA_DIR}/still_lifes.txt)
+add_test(operationsOnTheGrid ${EXECUTABLE_OUTPUT_PATH}/golBasicTest ${DATA_DIR}/glider.txt ${DATA_DIR}/gliderEvolution.txt)
 # Add add_test line here to expose a new test executable to CTest

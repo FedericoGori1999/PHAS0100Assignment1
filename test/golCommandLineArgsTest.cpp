@@ -46,7 +46,8 @@ TEST_CASE("Instantiation of the grid class", "[ex1]") {
 TEST_CASE("Randomness of the grid", "[ex2]")
 {
   /* Here we check for the randomness of the grid built. We test it for very big grids with few alive cells, so that the probability of having the same grid is really low.
-  If the grids match, we instantiate a second grid and test again. We repeat this process two times in order to have a negligible probability of having the same grid initialised */
+  If the grids match, we instantiate a second grid and test again. We repeat this process two times in order to have a negligible probability of having the same grid initialised.
+  In doing so, with a grid 10x10 with only an element = 'o', there is a probability of (10^(-4))^(-3) of getting the same grid, assuming that the randomizer works ideally. */
 
   bool differentGrid = true;
   gol::grid test1(100, 100, 1);

@@ -76,6 +76,7 @@ object per class and if in the required number of iterations a still pattern is 
 
 void searchStationaryPatterns(int rows, int columns, int aliveCells, int iterations)
 {
+  int gridsCounted = 0;
   bool notEmptyGrid = true;
   bool stillLifeFound = false;
   grid initialGrid(rows, columns, aliveCells);
@@ -90,7 +91,7 @@ void searchStationaryPatterns(int rows, int columns, int aliveCells, int iterati
       if(gameToPlay.getObjectGrid()->getGrid() == temporaryGame.getObjectGrid()->getGrid() && notEmptyGrid == true)
       {
         i = iterations;
-        std::cout << "\nWe have found a stationary pattern!\n" << std::endl;
+        std::cout << "\nWe have found a stationary pattern after having tried " << gridsCounted + 1 << " grids!\n" << std::endl;
         gameToPlay.getObjectGrid()->printGrid();
         stillLifeFound = true;
       }
@@ -98,6 +99,8 @@ void searchStationaryPatterns(int rows, int columns, int aliveCells, int iterati
     }
     reInitialiseGrid(&initialGrid, rows, columns, aliveCells);
     reInitialiseGame(&gameToPlay, initialGrid);
+    reInitialiseGame(&temporaryGame, initialGrid);
+    gridsCounted++;
   }
 }
 

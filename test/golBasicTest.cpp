@@ -38,11 +38,39 @@ TEST_CASE("Counting the neighbours", "[ex4]") {
 
 /* Testing takeStep(). We have created the file gliderEvolution.txt that depicts the expected evolution after one step of the configuration assumed in glider.txt.*/
 
-TEST_CASE("Take step testing", "[ex5]") {
+TEST_CASE("Take step testing from file", "[ex5]") {
   gol::grid gridToEvolve("glider.txt", "test");
   gol::grid gridResultExpected("gliderEvolution.txt", "test");
   gol::game gameOfLifeTest(gridToEvolve);
   gameOfLifeTest.takeStep();
   REQUIRE(gameOfLifeTest.getObjectGrid()->getGrid() ==
           gridResultExpected.getGrid());
+}
+
+TEST_CASE("Take step testing with random grid", "[ex6]")
+{
+  gol::grid gridToEvolve(10, 10, 20);
+  gol::game gameOfLifeTest(gridToEvolve);
+  gameOfLifeTest.takeStep();
+  for(int i = 0; i < gridToEvolve.getRows(); i++)
+  {
+    for(int j = 0; j < gridToEvolve.getColumns(); j++)
+    {
+      if(gridToEvolve.getGridElement(i, j) == 'o' && (gridToEvolve.fetchNeighbours(i, j) == 2 || gridToEvolve.fetchNeighbours(i, j) == 3))
+      {
+        REQUIRE(gameOfLifeTest.getObjectGrid()->getGridElement(i, j) == 'o');
+      }
+      else
+      {
+        if(gridToEvolve.getGridElement(i, j) == '-' && gridToEvolve.fetchNeighbours(i, j) == 3)
+        {
+          REQUIRE(gameOfLifeTest.getObjectGrid()->getGridElement(i, j) == 'o');
+        }
+        else
+        {
+          REQUIRE(gameOfLifeTest.getObjectGrid()->getGridElement(i, j) == '-');
+        }
+      }
+    }
+  }
 }

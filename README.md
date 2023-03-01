@@ -88,3 +88,34 @@ The testing can be done with ctest under the folder build. We have tested the fu
         - the function takeStep()
 
 Additional comment on the construction of the program can be found in the .h and .cpp files.
+
+We have found many still patterns in a 4x4 grid, including:
+    - the square-blocks of 4 alive cells (they can be 9 in a 4x4 grid), e.g.
+
+    - - - -
+    o o - - 
+    o o - -
+    - - - - 
+
+    - the hexagon-like patterns (they can be 4 in a 4x4 grid), e.g.
+
+    - o - - 
+    o - o - 
+    o - o - 
+    - o - -
+
+    - the octagon
+
+    - o o - 
+    o - - o   
+    o - - o 
+    - o o - 
+
+    - strange-shaped patterns, e.g. (hard to predict how many of them there could be)
+
+    - - - - 
+    - - o - 
+    - o - o 
+    - - o o 
+
+    Some of these patterns are available in the ScreenshotGol folder.
