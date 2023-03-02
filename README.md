@@ -75,6 +75,8 @@ I have created two executable files to use in this assignment:
     -> <grid>
     -> End of the game
 
+    There is a limit in the time of execution of the program set to 60 seconds: after this time has passed, an error message will be displayed. This has been implemented to avoid infinite loops for impossible stationary patterns requested.
+
 The requested screenshots can be found in the folder test/data/ScreenshotsGol. There are many still lives that we can find in a 4x4 grid, some of them have been captured in the screenshots.
 
 The testing can be done with ctest under the folder build. We have tested the functions as required in the assignment, in particular:
