@@ -165,7 +165,7 @@ ExceptionGrid::ExceptionGrid(std::string nameFile, FILE *f,
 
       message = "\nThe file " + nameFile + " is missing! Please try again.\n";
     } else {
-      message = "Empty file!";
+      message = "\nEmpty file! Please specify another file.\n";
     }
   }
 }

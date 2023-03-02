@@ -17,7 +17,9 @@
 namespace gol {
 
 /* Setting the grid: The idea is to setup the grid as a 2D matrix, i.e. a vector
- * of vectors. */
+ * of vectors. std::vector<char> elementsInRow{} is the vector that is used to
+create the row, and std::vector<std::vector<char>> vectorOfRows{} is the vector
+of vectors, i.e. the matrix.*/
 
 /* Initial constructor, never used in the program. */
 
