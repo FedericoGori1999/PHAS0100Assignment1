@@ -42,7 +42,7 @@ grid::grid(int rowsArgument, int columnsArgument)
 grid::grid(int rowsArgument, int columnsArgument, int aliveCells)
     : rows(rowsArgument), columns(columnsArgument) {
   if (rows == 0 || columns == 0 || aliveCells > rows * columns ||
-      aliveCells == 0) {
+      aliveCells <= 0) {
     throw gol::ExceptionGrid(rows, columns, aliveCells);
   }
   for (int i = 0; i < rows; i++) {

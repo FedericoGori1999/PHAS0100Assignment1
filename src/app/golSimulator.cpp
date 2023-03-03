@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
       gol::game gameToPlay(initialGrid);
       iterationsToInt = argv[4];
       int iterations = std::stoi(iterationsToInt);
-      if (iterations == 0) {
+      if (iterations <= 0) {
         throw gol::ExceptionGame(iterations);
       }
       gameOfLife(gameToPlay, initialGrid, iterations);
@@ -64,10 +64,10 @@ int main(int argc, char **argv) {
       int aliveCells = std::stoi(aliveCellsToInt);
       iterationsToInt = argv[5];
       int iterations = std::stoi(iterationsToInt);
-      if (iterations == 0) {
+      if (iterations <= 0) {
         throw gol::ExceptionGame(iterations);
       }
-      if (rows == 0 || columns == 0 || iterations == 0) {
+      if (rows <= 0 || columns <= 0 || aliveCells <= 0) {
         throw gol::ExceptionGrid(rows, columns, aliveCells);
       }
       gol::grid initialGrid(rows, columns, aliveCells);

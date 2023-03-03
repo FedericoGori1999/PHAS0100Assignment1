@@ -33,12 +33,22 @@ int main(int argc, char **argv) {
     int aliveCells = std::stoi(aliveCellsToInt);
     iterationsToInt = argv[4];
     int iterations = std::stoi(iterationsToInt);
+    if (row <= 0 || column <= 0 || aliveCells <= 0) {
+      throw gol::ExceptionGrid(row, column, aliveCells);
+    }
+    if (iterations <= 0) {
+      throw gol::ExceptionGame(iterations);
+    }
     gol::grid initialGrid(row, column, aliveCells);
     gol::game gameToPlay(initialGrid);
     gol::searchStationaryPatterns(row, column, aliveCells, iterations);
     std::cout << "\nEnd of the game\n" << std::endl;
     returnStatus = EXIT_SUCCESS;
   } catch (gol::ExceptionGolStationaryPatterns e) {
+    std::cout << e.whatProblem() << std::endl;
+  } catch (gol::ExceptionGrid e) {
+    std::cout << e.whatProblem() << std::endl;
+  } catch (gol::ExceptionGame e) {
     std::cout << e.whatProblem() << std::endl;
   }
   return returnStatus;

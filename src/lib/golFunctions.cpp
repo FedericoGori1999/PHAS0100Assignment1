@@ -81,13 +81,17 @@ void searchStationaryPatterns(int rows, int columns, int aliveCells,
   grid initialGrid(rows, columns, aliveCells);
   game gameToPlay(initialGrid);
   game temporaryGame(*(gameToPlay.getObjectGrid()));
-  std::chrono::high_resolution_clock::time_point begin = std::chrono::high_resolution_clock::now(); 
+  std::chrono::high_resolution_clock::time_point begin =
+      std::chrono::high_resolution_clock::now();
   while (!stillLifeFound) {
-    std::chrono::high_resolution_clock::duration duration = std::chrono::high_resolution_clock::now() - begin;
-    std::chrono::milliseconds durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
-    if (durationMs.count() >= 60000)
-    {
-      std::cout << "\n60 seconds have passed! The stationary pattern you are trying to catch is highly improbable or impossible. Please retry.\n";
+    std::chrono::high_resolution_clock::duration duration =
+        std::chrono::high_resolution_clock::now() - begin;
+    std::chrono::milliseconds durationMs =
+        std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    if (durationMs.count() >= 60000) {
+      std::cout
+          << "\n60 seconds have passed! The stationary pattern you are trying "
+             "to catch is highly improbable or impossible. Please retry.\n";
       break;
     }
     for (int i = 0; i < iterations; i++) {

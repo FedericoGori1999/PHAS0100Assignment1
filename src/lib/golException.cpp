@@ -132,21 +132,25 @@ ExceptionGolStationaryPatterns::ExceptionGolStationaryPatterns(
 std::string ExceptionGolStationaryPatterns::whatProblem() { return message; }
 
 ExceptionGrid::ExceptionGrid(int rows, int columns, int aliveCells) {
-  if (rows == 0 || columns == 0) {
+  if (rows <= 0 || columns <= 0) {
     /* Grid cannot have one of the dimensions equal to 0.*/
 
-    message = "\nThe grid cannot have 0 rows or 0 columns!\n";
+    message = "\nBad dimensions called for the grid! (0 or negative numbers "
+              "called)\n";
   } else {
-    if (aliveCells == 0) {
+    if (aliveCells < 0) {
       /* Empty grid selected.*/
 
-      message = "\nWarning: you have placed 0 alive cells!\n";
+      message = "\nWarning: you have placed a wrong number of alive cells!\n";
     }
     if (aliveCells > rows * columns) {
       /* More alive cells than available cells in the grid.*/
 
       message = "\nYou cannot place more alive cells than available cells in "
                 "the grid!\n";
+    }
+    if (aliveCells < 0) {
+      message = "\nBad input in the number of alive cells!\n";
     }
   }
 }
@@ -188,10 +192,10 @@ ExceptionGrid::ExceptionGrid(char status, int rowCoordinate,
 std::string ExceptionGrid::whatProblem() { return message; }
 
 ExceptionGame::ExceptionGame(int iterations) {
-  if (iterations == 0) {
+  if (iterations <= 0) {
     /* 0 iterations requested: no game of life.*/
 
-    message = "\nYou have requested 0 iterations!\n";
+    message = "\nYou have requested a bad number of iterations!\n";
   }
 }
 
